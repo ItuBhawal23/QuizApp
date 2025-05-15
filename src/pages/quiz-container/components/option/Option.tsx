@@ -1,49 +1,49 @@
-import { useEffect, useState, useRef } from "react";
 import styles from "./Option.module.css";
 
 type OptionProps = {
+  index: number;
   option: string;
-  answer: string;
-  questionId: number;
+  selectedOptionIndex: number | null;
+  isSelectedOptionCorrect: boolean | null;
+  handleOptionClick: any;
+  correctAnswerIndex: number;
 };
 
-const Option = ({ option, questionId, answer }: OptionProps) => {
-  const [isSelectedOptionCorrect, setIsSelectedOptionCorrect] = useState<
-    boolean | null
-  >(null);
-  const [isClicked, setIsClicked] = useState<boolean>(false);
+const Option = ({
+  option,
+  handleOptionClick,
+  isSelectedOptionCorrect,
+  selectedOptionIndex,
+  index,
+  correctAnswerIndex
+}: OptionProps) => {
+  const isSelected = index === selectedOptionIndex;
+  const correctIndex = index === correctAnswerIndex;
 
-  const validateSelectedOption = () => {
-    console.log("option", option);
-    if (isClicked === true) return;
+  const getOptionClass = () => {
+    if (selectedOptionIndex === null) return styles.option_wrapper;
 
-    setIsClicked(true);
-
-    if (option === answer) {
-      setIsSelectedOptionCorrect(true);
-    } else {
-      setIsSelectedOptionCorrect(false);
-    }
-  };
-
-  //reset all user actions for each question
-  useEffect(() => {
-    setIsClicked(false);
-    setIsSelectedOptionCorrect(false);
-  }, [questionId]);
-
-  const getOptionColor = () => {
-    if (!isClicked) return `${styles.option_wrapper}`;
-
-    if (isSelectedOptionCorrect) {
+    // Highlight correct option always
+    if (correctIndex) {
       return `${styles.option_wrapper} ${styles.correct_option}`;
-    } else {
+    }
+
+    // if (isSelected) {
+    //   return isSelectedOptionCorrect
+    //     ? `${styles.option_wrapper} ${styles.correct_option}`
+    //     : `${styles.option_wrapper} ${styles.incorrect_option}`;
+    // }
+
+    // If this is the selected one and it's wrong
+    if (isSelected && !correctIndex) {
       return `${styles.option_wrapper} ${styles.incorrect_option}`;
     }
+
+    return styles.option_wrapper;
   };
 
   return (
-    <div className={getOptionColor()} onClick={() => validateSelectedOption()}>
+    <div className={getOptionClass()} onClick={() => handleOptionClick()}>
       <p>{option}</p>
     </div>
   );
