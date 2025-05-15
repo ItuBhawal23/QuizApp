@@ -4,7 +4,6 @@ type OptionProps = {
   index: number;
   option: string;
   selectedOptionIndex: number | null;
-  isSelectedOptionCorrect: boolean | null;
   handleOptionClick: any;
   correctAnswerIndex: number;
 };
@@ -12,7 +11,6 @@ type OptionProps = {
 const Option = ({
   option,
   handleOptionClick,
-  isSelectedOptionCorrect,
   selectedOptionIndex,
   index,
   correctAnswerIndex
@@ -28,13 +26,7 @@ const Option = ({
       return `${styles.option_wrapper} ${styles.correct_option}`;
     }
 
-    // if (isSelected) {
-    //   return isSelectedOptionCorrect
-    //     ? `${styles.option_wrapper} ${styles.correct_option}`
-    //     : `${styles.option_wrapper} ${styles.incorrect_option}`;
-    // }
-
-    // If this is the selected one and it's wrong
+    // If the option is the selected one and it's wrong
     if (isSelected && !correctIndex) {
       return `${styles.option_wrapper} ${styles.incorrect_option}`;
     }

@@ -1,0 +1,13 @@
+.score_board_container {
+  width: 500px;
+  height: 180px;
+  background-color: #fff;
+  padding: 16px 20px;
+  border-radius: 20px;
+  border: 2px solid #dca6e2;
+  margin: auto;
+  text-align: center;
+  h1 {
+    margin: 0;
+  }
+}

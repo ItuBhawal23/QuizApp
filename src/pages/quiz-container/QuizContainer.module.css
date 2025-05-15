@@ -1,8 +1,8 @@
 .quiz_container {
-  width: 500px;
-  height: 600px;
+  width: 450px;
+  min-height: 470px;
   background-color: #fff;
-  padding: 16px 20px;
+  padding: 16px 30px;
   border-radius: 20px;
   border: 2px solid #dca6e2;
   margin: auto;
@@ -14,10 +14,14 @@
   }
   .question_wrapper{
     text-align: left;
+    h3{
+      margin: 16px 0 12px 0;
+    }
   }
   .action_buttons{
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-top: 20px;
   }
 }
