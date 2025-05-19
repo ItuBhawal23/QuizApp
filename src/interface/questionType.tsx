@@ -3,4 +3,6 @@ export type QuestionBank = {
   question: string;
   options: Array<string>;
   answer: string;
+  selectedOptionIndex?: number | null;
+  correctAnswerIndex?: number | null;
 };

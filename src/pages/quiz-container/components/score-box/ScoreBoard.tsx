@@ -4,19 +4,15 @@ import styles from "./ScoreBoard.module.css";
 type ScoreBoardProps = {
   totalScore: number;
   totalQuestion: number;
-  handleReset: any;
+  onReset: () => void;
 };
 
-function ScoreBoard({
-  totalScore,
-  handleReset,
-  totalQuestion
-}: ScoreBoardProps) {
+function ScoreBoard({ totalScore, onReset, totalQuestion }: ScoreBoardProps) {
   return (
     <div className={styles.score_board_container}>
       <h1>Score Board</h1>
       <p>{`You scored ${totalScore} out of ${totalQuestion}!`}</p>
-      <Button label={"Reset"} onClick={() => handleReset()} disabled={false} />
+      <Button label={"Reset"} onClick={() => onReset()} disabled={false} />
     </div>
   );
 }

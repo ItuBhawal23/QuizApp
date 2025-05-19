@@ -4,13 +4,13 @@ type OptionProps = {
   index: number;
   option: string;
   selectedOptionIndex: number | null;
-  handleOptionClick: any;
+  onOptionClick: () => void;
   correctAnswerIndex: number;
 };
 
 const Option = ({
   option,
-  handleOptionClick,
+  onOptionClick,
   selectedOptionIndex,
   index,
   correctAnswerIndex
@@ -35,7 +35,7 @@ const Option = ({
   };
 
   return (
-    <div className={getOptionClass()} onClick={() => handleOptionClick()}>
+    <div className={getOptionClass()} onClick={() => onOptionClick()}>
       <p>{option}</p>
     </div>
   );

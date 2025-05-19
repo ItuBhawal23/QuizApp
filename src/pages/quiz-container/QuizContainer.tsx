@@ -19,7 +19,11 @@ const QuizContainer = () => {
   const [isNextButtonDisable, setIsNextButtonDisable] = useState<boolean>(true);
 
   // Function to handle the option click
-  const handleOptionClick = (option: string, index: number, answer: string) => {
+  const handleSelectedOption = (
+    option: string,
+    index: number,
+    answer: string
+  ) => {
     if (selectedOptionIndex !== null) return;
 
     setIsNextButtonDisable(false);
@@ -54,8 +58,8 @@ const QuizContainer = () => {
                   tempQuestionList[questionIndex].answer
                 )
               }
-              handleOptionClick={() =>
-                handleOptionClick(
+              onOptionClick={() =>
+                handleSelectedOption(
                   option,
                   index,
                   tempQuestionList[questionIndex].answer
@@ -69,25 +73,29 @@ const QuizContainer = () => {
   };
 
   // Function to move back to previous question
-  const handlePreviousQuestion = () => {
+  const onPrevious = () => {
     setQuestionIndex((prev) => prev - 1);
 
     setIsNextButtonDisable(false);
   };
 
   // Function to move to the next question
-  const handleNextQuestion = () => {
+  const onNext = () => {
     setQuestionIndex((prev) => prev + 1);
 
     const tempQuestionList = [...questionList];
 
-    (tempQuestionList[questionIndex] as any)["selectedOptionIndex"] =
-      selectedOptionIndex;
-    (tempQuestionList[questionIndex] as any)["correctAnswerIndex"] =
-      tempQuestionList[questionIndex]?.options.indexOf(
-        tempQuestionList[questionIndex].answer
-      );
+    const currentQuestion = tempQuestionList[questionIndex];
 
+    tempQuestionList[questionIndex] = {
+      ...currentQuestion,
+      selectedOptionIndex: selectedOptionIndex,
+      correctAnswerIndex: currentQuestion.options.indexOf(
+        currentQuestion.answer
+      )
+    };
+
+    setIsNextButtonDisable(true);
     setQuestionList(tempQuestionList);
   };
 
@@ -112,13 +120,13 @@ const QuizContainer = () => {
           <div className={styles.action_buttons}>
             <Button
               label="Previous"
-              onClick={() => handlePreviousQuestion()}
+              onClick={() => onPrevious()}
               disabled={questionIndex === 0}
             />
 
             <Button
               label="Next"
-              onClick={() => handleNextQuestion()}
+              onClick={() => onNext()}
               disabled={isNextButtonDisable}
             />
           </div>
@@ -137,7 +145,7 @@ const QuizContainer = () => {
           <ScoreBoard
             totalScore={totalScore}
             totalQuestion={questionBank.length}
-            handleReset={() => handleReset()}
+            onReset={() => handleReset()}
           />
         )}
         ;
