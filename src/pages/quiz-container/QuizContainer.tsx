@@ -1,37 +1,34 @@
-import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  handleSelectedOption,
+  onNextQuestion,
+  onPreviousQuestion,
+  onResetQuestion,
+} from "../../store/actions/quizActions";
 import { questionBank } from "../../constants/questionBank";
-import type { QuestionBank } from "../../interface/questionType";
 import Button from "../../components/button/Button";
 import Option from "./components/option/Option";
 import QuestionStatus from "./components/question-status/QuestionStatus";
 import ScoreBoard from "./components/score-box/ScoreBoard";
 import styles from "./QuizContainer.module.css";
+import type { RootState } from "../../store";
 
 const QuizContainer = () => {
-  const [questionIndex, setQuestionIndex] = useState<number>(0);
-  const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | null>(
-    null
+  const dispatch = useDispatch();
+  const questionIndex = useSelector((state: RootState) => state.questionIndex);
+  const questionList = useSelector((state: RootState) => state.questionList);
+  const selectedOptionIndex = useSelector(
+    (state: RootState) => state.selectedOptionIndex
   );
-  const [totalScore, setTotalScore] = useState<number>(0);
-  const [questionList, setQuestionList] = useState<QuestionBank[]>([
-    ...questionBank
-  ]);
-  const [isNextButtonDisable, setIsNextButtonDisable] = useState<boolean>(true);
+  const totalScore = useSelector((state: RootState) => state.totalScore);
+  const isNextButtonDisable = useSelector(
+    (state: RootState) => state.isNextButtonDisable
+  );
 
   // Function to handle the option click
-  const handleSelectedOption = (
-    option: string,
-    index: number,
-    answer: string
-  ) => {
+  const onOptionClick = (option: string, index: number, answer: string) => {
     if (selectedOptionIndex !== null) return;
-
-    setIsNextButtonDisable(false);
-    setSelectedOptionIndex(index);
-
-    if (option === answer) {
-      setTotalScore((prev) => prev + 1);
-    }
+    dispatch(handleSelectedOption(option, index, answer));
   };
 
   // Function to render the questions based on questionIndex
@@ -59,7 +56,7 @@ const QuizContainer = () => {
                 )
               }
               onOptionClick={() =>
-                handleSelectedOption(
+                onOptionClick(
                   option,
                   index,
                   tempQuestionList[questionIndex].answer
@@ -74,40 +71,18 @@ const QuizContainer = () => {
 
   // Function to move back to previous question
   const onPrevious = () => {
-    setQuestionIndex((prev) => prev - 1);
-
-    setIsNextButtonDisable(false);
+    dispatch(onPreviousQuestion());
   };
 
   // Function to move to the next question
   const onNext = () => {
-    setQuestionIndex((prev) => prev + 1);
-
-    const tempQuestionList = [...questionList];
-
-    const currentQuestion = tempQuestionList[questionIndex];
-
-    tempQuestionList[questionIndex] = {
-      ...currentQuestion,
-      selectedOptionIndex: selectedOptionIndex,
-      correctAnswerIndex: currentQuestion.options.indexOf(
-        currentQuestion.answer
-      )
-    };
-
-    setIsNextButtonDisable(true);
-    setQuestionList(tempQuestionList);
+    dispatch(onNextQuestion());
   };
 
   //Reset the quiz
   const handleReset = () => {
-    setQuestionIndex(0);
+    dispatch(onResetQuestion());
   };
-
-  // Resets every state when a new question is rendered
-  useEffect(() => {
-    setSelectedOptionIndex(null);
-  }, [questionIndex]);
 
   return (
     <>
