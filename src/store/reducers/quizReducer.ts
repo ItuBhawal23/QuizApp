@@ -4,7 +4,7 @@ import {
   OPTION_SELECTED,
   PREVIOUS_QUESTION,
   NEXT_QUESTION,
-  RESET_QUESTION
+  RESET_QUESTION,
 } from "../types/quizType";
 
 type ActionType = {
@@ -25,7 +25,7 @@ const initialState: stateType = {
   questionList: [...questionBank],
   selectedOptionIndex: null,
   totalScore: 0,
-  isNextButtonDisable: true
+  isNextButtonDisable: true,
 };
 
 export const quizReducer = (state = initialState, action: ActionType) => {
@@ -43,7 +43,7 @@ export const quizReducer = (state = initialState, action: ActionType) => {
         selectedOptionIndex: selectedIndex,
         correctAnswerIndex: currentQuestion.options.indexOf(
           currentQuestion.answer
-        )
+        ),
       };
 
       return {
@@ -51,7 +51,7 @@ export const quizReducer = (state = initialState, action: ActionType) => {
         isNextButtonDisable: false,
         selectedOptionIndex: selectedIndex,
         questionList: updatedQuestionList,
-        totalScore: option === answer ? state.totalScore + 1 : state.totalScore
+        totalScore: option === answer ? state.totalScore + 1 : state.totalScore,
       };
     }
 
@@ -59,7 +59,7 @@ export const quizReducer = (state = initialState, action: ActionType) => {
       return {
         ...state,
         questionIndex: state.questionIndex - 1,
-        isNextButtonDisable: false
+        isNextButtonDisable: false,
       };
 
     case NEXT_QUESTION: {
@@ -72,10 +72,10 @@ export const quizReducer = (state = initialState, action: ActionType) => {
         selectedOptionIndex: null,
         questionIndex: state.questionIndex + 1,
         isNextButtonDisable:
-          currentQuestion.hasOwnProperty("selectedOptionIndex") &&
-          currentQuestion.hasOwnProperty("correctAnswerIndex")
+          currentQuestion?.hasOwnProperty("selectedOptionIndex") &&
+          currentQuestion?.hasOwnProperty("correctAnswerIndex")
             ? false
-            : true
+            : true,
       };
     }
 
@@ -96,7 +96,7 @@ export const quizReducer = (state = initialState, action: ActionType) => {
         ...state,
         questionList: updatedQuestionBank,
         questionIndex: 0,
-        selectedOptionIndex: null
+        selectedOptionIndex: null,
       };
     }
 
